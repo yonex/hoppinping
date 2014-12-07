@@ -1,0 +1,41 @@
+.jumbotron
+  %p.lead= @hitokoto
+  %h1
+    %span 現在の住民数
+    %span #{@total.insert_commas}
+  %span #{@prev_population.prefecture} の人口を #{(@total - @prev_population.count).insert_commas} 人超えました
+  - if !@next_population.nil?
+    %p.lead #{@next_population.prefecture} の人口突破まであと #{(@next_population.count - @total).insert_commas} 再生
+  - else
+    %p.lead そしてついに、ごちうさ住民の人口が日本一となった…
+  %small.text-muted
+    全話合計再生数を住民数と定義しました。また、
+    %a(href="http://ja.wikipedia.org/wiki/%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C%E3%81%AE%E4%BA%BA%E5%8F%A3%E4%B8%80%E8%A6%A7" target="_blank") 都道府県の人口一覧
+    を参考にしました。
+
+.alert.alert-info.text-center(role="alert")
+  %span このウェブサイトは「
+  %a(href="http://www.adventar.org/calendars/439" target="_blank") ごちうさ住民 Advent Calendar 2014
+  %span 」の7日目です。
+
+.row.marketing
+  - @videos.each_with_index.each_slice(@videos.size / 2) do |item|
+    .col-lg-6
+      - item.each do |video, index|
+        %ul.media-list
+          %li.media
+            .page-header
+              %h1
+                %span 第#{index+1}羽
+                %small.glyphicon.glyphicon-stats(aria-hidden="true" title="再生")
+                %small #{video.view_counter.insert_commas}
+                %small.glyphicon.glyphicon-comment(aria-hidden="true" title="コメント")
+                %small #{video.comment_num.insert_commas}
+                %small.glyphicon.glyphicon-heart(aria-hidden="true" title="マイリスト")
+                %small #{video.mylist_counter.insert_commas}
+            %a.media-left.media-middle(href="http://nicovideo.jp/watch/#{video.id}" target="_blank")
+              %img(src="#{video.thumbnail}" alt="thumbnail")
+            .media-body
+              %p
+                %a(href="http://nicovideo.jp/watch/#{video.id}" target="_blank")= video.title
+              .well.well-sm.text-muted= video.last_res_body
