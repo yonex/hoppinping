@@ -2,12 +2,12 @@
   %p.lead= @hitokoto
   %h1
     %span 現在の住民数
-    %span #{@total.insert_commas}
-  %span #{@prev_population.prefecture} の人口を #{(@total - @prev_population.count).insert_commas} 人超えました
+    %span #{@total_with_commas}
+  %span #{@prev_population.prefecture} の人口を #{@over_count} 人超えました
   - if !@next_population.nil?
-    %p.lead #{@next_population.prefecture} の人口突破まであと #{(@next_population.count - @total).insert_commas} 再生
+    %p.lead #{@next_population.prefecture} の人口突破まであと #{@next_count} 再生
   - else
-    %p.lead そしてついに、ごちうさ住民の人口が日本一となった…
+    %p.lead そしてとうとうごちうさ住民の人口は日本一となった
   %small.text-muted
     全話合計再生数を住民数と定義しました。また、
     %a(href="http://ja.wikipedia.org/wiki/%E9%83%BD%E9%81%93%E5%BA%9C%E7%9C%8C%E3%81%AE%E4%BA%BA%E5%8F%A3%E4%B8%80%E8%A6%A7" target="_blank") 都道府県の人口一覧
@@ -39,3 +39,15 @@
               %p
                 %a(href="http://nicovideo.jp/watch/#{video.id}" target="_blank")= video.title
               .well.well-sm.text-muted= video.last_res_body
+
+%footer.footer
+  .btn-group
+    %a.twitter-share-button(href="https://twitter.com/share" data-text='"現在の住民数 → #{@total_with_commas}人" こころぴょんぴょん.com') Tweet
+    :javascript
+      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+    %a.hatena-bookmark-button(href="http://b.hatena.ne.jp/entry/http://xn--28ja3ha8gb2b0cc.com/" data-hatena-bookmark-title="こころぴょんぴょん.com" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加")
+      %img(src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;")
+    %script(type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async")
+  %hr
+  %p.text-center
+    %a(href="https://twitter.com/yonex")@yonex

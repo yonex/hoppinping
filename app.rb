@@ -20,9 +20,8 @@ include Population
 
 redis = Redis.new
 cache = VideoCache.new redis, 300
-videoRepository = VideoRepository.new cache
+video_repository = VideoRepository.new cache
 
-# 
 configure :production do
   not_found do
     @error_message = "ページが見つからない"
@@ -50,11 +49,14 @@ hitokoto_list = CSV.read('./data/hitokoto.csv').map { |row| row[0] }
 
 get '/' do
 	@videos = video_ids_from_file.map do |video|
-		videoRepository.get video[:id]
+		video_repository.get video[:id]
 	end
-	@total = @videos.map do |video| video.view_counter end.inject do |a, b| a + b end
-	@next_population = get_next_population populations, @total
-	@prev_population = get_prev_population populations, @total
+	total = @videos.map do |video| video.view_counter end.inject do |a, b| a + b end
+	@total_with_commas = total.insert_commas
+	@next_population = get_next_population populations, total
+	@prev_population = get_prev_population populations, total
+	@over_count = (total - @prev_population.count).insert_commas
+	@next_count = (@next_population.count - total).insert_commas
 	@hitokoto = hitokoto_list.sample
 	haml :index
 end
